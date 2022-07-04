@@ -3,6 +3,7 @@ using Licht.Unity.Objects;
 using System.Collections;
 using System.Collections.Generic;
 using Licht.Impl.Orchestration;
+using Licht.Unity.Physics;
 using UnityEngine;
 
 public class MapGenerator : BaseGameObject
@@ -10,7 +11,7 @@ public class MapGenerator : BaseGameObject
     public Grid Grid;
     public MapTileType[] Tiles;
     public ScriptPrefab MapTilePrefab;
-    public Vector2Int MapBounds;
+    public Vector2Int MapPosition;
     public Vector2Int MapSize;
     public Vector2 MapTileOffset;
     public Vector2Int PlayerSpawn;
@@ -33,10 +34,16 @@ public class MapGenerator : BaseGameObject
         );
     }
 
+    public bool IsInBounds(Vector3Int gridPos)
+    {
+        return new BoundsInt((Vector3Int)MapPosition, new Vector3Int(MapSize.x, MapSize.y, 1)).Contains(new Vector3Int(gridPos.x, gridPos.y));
+    }
+
     private IEnumerable<IEnumerable<Action>> SpawnPlayer()
     {
         _player.Reset();
-        _player.transform.position = Grid.CellToWorld(new Vector3Int(PlayerSpawn.x, PlayerSpawn.y) + (Vector3Int)MapBounds) - (Vector3)MapTileOffset;
+        _player.transform.position = GridToWorld((Vector3Int) MapPosition + new Vector3Int(PlayerSpawn.x, PlayerSpawn.y));
+
         yield break;
     }
 
@@ -49,13 +56,20 @@ public class MapGenerator : BaseGameObject
             {
                 for (var row = 0; row < 10; row++)
                 {
-                    var worldPos = Grid.CellToWorld(new Vector3Int(row + MapBounds.x, column + MapBounds.y));
                     var obj = objs[row + column * 10];
-                    obj.Component.transform.position = worldPos - (Vector3)MapTileOffset;
+                    obj.Component.transform.position =
+                        GridToWorld(new Vector3Int(row + MapPosition.x, column + MapPosition.y));
                     obj.PickSprite(Tiles[0]);
                     yield return obj.ShowSprite().AsCoroutine();
                 }
             }
         }
     }
+
+    public Vector3 GridToWorld(Vector3Int pos)
+    {
+       var resultPos = Grid.GetCellCenterWorld(pos) - (Vector3)MapTileOffset; //+ (Vector3)MapTileOffset + new Vector3(0, 0.5f);
+        return new Vector3(resultPos.x, resultPos.y);
+    }
+
 }
