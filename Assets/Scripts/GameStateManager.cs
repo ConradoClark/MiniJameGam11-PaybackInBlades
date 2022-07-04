@@ -12,6 +12,7 @@ public class GameStateManager : MonoBehaviour
     }
 
     public GameState CurrentState { get; private set; }
+    public float ActionDuration = 0.5f;
 
     public void SetState(GameState gameState)
     {
