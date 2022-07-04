@@ -1,9 +1,7 @@
 using System;
 using Licht.Unity.Objects;
-using System.Collections;
 using System.Collections.Generic;
 using Licht.Impl.Orchestration;
-using Licht.Unity.Physics;
 using UnityEngine;
 
 public class MapGenerator : BaseGameObject
@@ -13,7 +11,6 @@ public class MapGenerator : BaseGameObject
     public ScriptPrefab MapTilePrefab;
     public Vector2Int MapPosition;
     public Vector2Int MapSize;
-    public Vector2 MapTileOffset;
     public Vector2Int PlayerSpawn;
 
     private MapTilePool _mapTilePool;
@@ -42,7 +39,7 @@ public class MapGenerator : BaseGameObject
     private IEnumerable<IEnumerable<Action>> SpawnPlayer()
     {
         _player.Reset();
-        _player.transform.position = GridToWorld((Vector3Int) MapPosition + new Vector3Int(PlayerSpawn.x, PlayerSpawn.y));
+        _player.transform.position = GridToWorld((Vector3Int)MapPosition + new Vector3Int(PlayerSpawn.x, PlayerSpawn.y));
 
         yield break;
     }
@@ -68,7 +65,7 @@ public class MapGenerator : BaseGameObject
 
     public Vector3 GridToWorld(Vector3Int pos)
     {
-       var resultPos = Grid.GetCellCenterWorld(pos) - (Vector3)MapTileOffset; //+ (Vector3)MapTileOffset + new Vector3(0, 0.5f);
+        var resultPos = Grid.GetCellCenterWorld(pos); //+ (Vector3)MapTileOffset + new Vector3(0, 0.5f);
         return new Vector3(resultPos.x, resultPos.y);
     }
 

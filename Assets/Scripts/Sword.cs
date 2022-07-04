@@ -8,6 +8,13 @@ using UnityEngine;
 
 public class Sword : BaseGameObject
 {
+    private GameStateManager _gameStateManager;
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        _gameStateManager = SceneObject<GameStateManager>.Instance();
+    }
+
     private void OnEnable()
     {
         DefaultMachinery.AddBasicMachine(Float());
@@ -20,9 +27,10 @@ public class Sword : BaseGameObject
             yield return transform.GetAccessor()
                 .LocalPosition
                 .Y
-                .Increase(0.25f)
-                .Over(1f)
+                .Increase(0.15f)
+                .Over(0.75f)
                 .WithStep(0.05f)
+                .PauseIf(() => _gameStateManager.CurrentState == GameStateManager.GameState.Action)
                 .Easing(EasingYields.EasingFunction.QuadraticEaseInOut)
                 .UsingTimer(GameTimer)
                 .Build();
@@ -30,9 +38,10 @@ public class Sword : BaseGameObject
             yield return transform.GetAccessor()
                 .LocalPosition
                 .Y
-                .Decrease(0.25f)
-                .Over(1f)
+                .Decrease(0.15f)
+                .Over(0.75f)
                 .WithStep(0.05f)
+                .PauseIf(() => _gameStateManager.CurrentState == GameStateManager.GameState.Action)
                 .Easing(EasingYields.EasingFunction.QuadraticEaseInOut)
                 .UsingTimer(GameTimer)
                 .Build();

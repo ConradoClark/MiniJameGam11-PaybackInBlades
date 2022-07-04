@@ -351,6 +351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064e531502e9ef94fb5e2d4325f1395b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MousePosInput: {fileID: 11400000, guid: 1b4fd913916d00545af446ed1a2e855d, type: 2}
+  MouseClickInput: {fileID: 11400000, guid: dfa52081b6cad6546b23397bae8c5fbc, type: 2}
 --- !u!1 &1520972226
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,8 +823,7 @@ MonoBehaviour:
   MapTilePrefab: {fileID: 11400000, guid: d5291545f2e49464684c3143ad842e43, type: 2}
   MapPosition: {x: -9, y: -5}
   MapSize: {x: 10, y: 10}
-  MapTileOffset: {x: 0, y: 0}
-  PlayerSpawn: {x: 0, y: 0}
+  PlayerSpawn: {x: 3, y: 3}
 --- !u!114 &1979891283
 MonoBehaviour:
   m_ObjectHideFlags: 0
